@@ -1,7 +1,14 @@
 package pl.lenistwo.rest.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import pl.lenistwo.rest.entity.Ticket;
 
-public interface TicketRepository extends JpaRepository<Ticket,Long> {
+@Repository
+public interface TicketRepository extends CrudRepository<Ticket, Long> {
+
+    Iterable<Ticket> getAllByPlayerName(String playerName);
+
+    Ticket getById(Long id);
+
 }
