@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.lenistwo.rest.entity.Ticket;
+import pl.lenistwo.rest.exceptions.TicketNotFoundException;
 import pl.lenistwo.rest.repositories.TicketRepository;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/ticket-api")
@@ -37,7 +40,8 @@ public class TicketController {
 
     @GetMapping(value = "/delete-ticket", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Iterable<Ticket> deleteTicketById(@RequestParam("id") Long id) {
-        ticketRepository.deleteById(id);
+        Optional<Ticket> ticketOptional = Optional.ofNullable(ticketRepository.getById(id));
+        ticketRepository.delete(ticketOptional.orElseThrow(TicketNotFoundException::new));
         return ticketRepository.findAll();
     }
 
