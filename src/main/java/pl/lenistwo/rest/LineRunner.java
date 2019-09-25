@@ -14,8 +14,13 @@ public class LineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repository.save(new Ticket("Lenistwo","NIe dziala","help plox"));
-        repository.save(new Ticket("Kikrun","dziala","help "));
-        repository.save(new Ticket("tremek","NIe dziala","help plox"));
+        repository.save(new Ticket("Lenistwo", "that wont work", "help plox"));
+        repository.save(new Ticket("Kikrun", "dziala", "help "));
+        repository.save(new Ticket("tremek", "NIe dziala", "help plox"));
+        for (int i = 0; i < 50 ; i++) {
+            repository.save(new Ticket("Lenistwo", "that wont work", "help plox"));
+            repository.save(new Ticket("Kikrun", "dziala", "help "));
+            repository.save(new Ticket("tremek", "NIe dziala", "help plox"));
+        }
     }
 }

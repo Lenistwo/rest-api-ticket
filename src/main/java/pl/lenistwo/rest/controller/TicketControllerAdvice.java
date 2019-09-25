@@ -22,7 +22,7 @@ public class TicketControllerAdvice {
     @ExceptionHandler({
             TicketNotFoundException.class
     })
-    public Iterable<Ticket> ticketNotFoundExceptionHandle(){
+    public Iterable<Ticket> ticketNotFoundExceptionHandle() {
         return repository.findAll();
     }
 

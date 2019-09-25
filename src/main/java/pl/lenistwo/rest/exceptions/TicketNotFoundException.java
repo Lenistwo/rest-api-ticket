@@ -1,6 +1,6 @@
 package pl.lenistwo.rest.exceptions;
 
-public class TicketNotFoundException extends RuntimeException{
+public class TicketNotFoundException extends RuntimeException {
 
     public TicketNotFoundException() {
     }

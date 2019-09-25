@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.lenistwo.rest.entity.TicketsList;
 import pl.lenistwo.rest.entity.Ticket;
 import pl.lenistwo.rest.exceptions.TicketNotFoundException;
 import pl.lenistwo.rest.repositories.TicketRepository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -24,8 +26,10 @@ public class TicketController {
     }
 
     @GetMapping(value = "/all-tickets", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Iterable<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+    public TicketsList getAllTickets() {
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        ticketRepository.findAll().forEach(tickets::add);
+        return new TicketsList("All tickets", tickets);
     }
 
     @GetMapping(value = "/ticket-id", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -34,15 +38,19 @@ public class TicketController {
     }
 
     @GetMapping(value = "/player-tickets", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Iterable<Ticket> getAllPlayerTickets(@RequestParam(value = "userName") String userName) {
-        return ticketRepository.getAllByPlayerName(userName);
+    public TicketsList getAllPlayerTickets(@RequestParam(value = "userName") String userName) {
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        ticketRepository.getAllByPlayerName(userName).forEach(tickets::add);
+        return new TicketsList("All player tickets", tickets);
     }
 
     @GetMapping(value = "/delete-ticket", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Iterable<Ticket> deleteTicketById(@RequestParam("id") Long id) {
+    public TicketsList deleteTicketById(@RequestParam("id") Long id) {
         Optional<Ticket> ticketOptional = Optional.ofNullable(ticketRepository.getById(id));
         ticketRepository.delete(ticketOptional.orElseThrow(TicketNotFoundException::new));
-        return ticketRepository.findAll();
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        ticketRepository.findAll().forEach(tickets::add);
+        return new TicketsList("All tickets", tickets);
     }
 
 

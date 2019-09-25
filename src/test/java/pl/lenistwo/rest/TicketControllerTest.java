@@ -45,7 +45,32 @@ public class TicketControllerTest {
         // when + then
         this.mockMvc.perform(get("/ticket-api/all-tickets")).
                 andExpect(status().isOk()).
-                andExpect(content().json("[{\"id\":null,\"playerName\":\"Lenistwo\",\"subject\":\"that wont work\",\"content\":\"help plox\",\"requestDate\":\"2019-09-18\"},{\"id\":null,\"playerName\":\"Kikrun\",\"subject\":\"dziala\",\"content\":\"help \",\"requestDate\":\"2019-09-18\"},{\"id\":null,\"playerName\":\"tremek\",\"subject\":\"NIe dziala\",\"content\":\"help plox\",\"requestDate\":\"2019-09-18\"}]"));
+                andExpect(content().json("{\n" +
+                        "\"description\": \"All tickets\",\n" +
+                        "\"tickets\": [\n" +
+                        "{\n" +
+                        "\"id\": null,\n" +
+                        "\"playerName\": \"Lenistwo\",\n" +
+                        "\"subject\": \"that wont work\",\n" +
+                        "\"content\": \"help plox\",\n" +
+                        "\"requestDate\": \"2019-09-24\"\n" +
+                        "},\n" +
+                        "{\n" +
+                        "\"id\": null,\n" +
+                        "\"playerName\": \"Kikrun\",\n" +
+                        "\"subject\": \"dziala\",\n" +
+                        "\"content\": \"help \",\n" +
+                        "\"requestDate\": \"2019-09-24\"\n" +
+                        "},\n" +
+                        "{\n" +
+                        "\"id\": null,\n" +
+                        "\"playerName\": \"tremek\",\n" +
+                        "\"subject\": \"NIe dziala\",\n" +
+                        "\"content\": \"help plox\",\n" +
+                        "\"requestDate\": \"2019-09-24\"\n" +
+                        "}\n" +
+                        "]\n" +
+                        "}"));
     }
 
     @Test
@@ -58,7 +83,13 @@ public class TicketControllerTest {
 
         // when + then
         this.mockMvc.perform(get("/ticket-api/player-tickets?userName=" + lenistwoTicket.getPlayerName())).
-                andExpect(status().isOk()).andExpect(content().json("[{\"id\":null,\"playerName\":\"Lenistwo\",\"subject\":\"that wont work\",\"content\":\"help plox\",\"requestDate\":\"2019-09-18\"}]"));
+                andExpect(status().isOk()).andExpect(content().json("{\n" +
+                "\"id\": 1,\n" +
+                "\"playerName\": \"Lenistwo\",\n" +
+                "\"subject\": \"that wont work\",\n" +
+                "\"content\": \"help plox\",\n" +
+                "\"requestDate\": \"2019-09-23\"\n" +
+                "}"));
     }
 
     @Test
