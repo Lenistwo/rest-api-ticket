@@ -9,18 +9,22 @@ import pl.lenistwo.rest.repositories.TicketRepository;
 @Component
 public class LineRunner implements CommandLineRunner {
 
+    private final TicketRepository repository;
+
     @Autowired
-    private TicketRepository repository;
+    public LineRunner(TicketRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void run(String... args) throws Exception {
         repository.save(new Ticket("Lenistwo", "that wont work", "help plox"));
         repository.save(new Ticket("Kikrun", "dziala", "help "));
         repository.save(new Ticket("tremek", "NIe dziala", "help plox"));
-        for (int i = 0; i < 50 ; i++) {
-            repository.save(new Ticket("Lenistwo", "that wont work", "help plox"));
-            repository.save(new Ticket("Kikrun", "dziala", "help "));
-            repository.save(new Ticket("tremek", "NIe dziala", "help plox"));
-        }
+//        for (int i = 0; i < 50 ; i++) {
+//            repository.save(new Ticket("Lenistwo", "that wont work", "help plox"));
+//            repository.save(new Ticket("Kikrun", "dziala", "help "));
+//            repository.save(new Ticket("tremek", "NIe dziala", "help plox"));
+//        }
     }
 }
