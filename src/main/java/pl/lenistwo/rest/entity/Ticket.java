@@ -72,4 +72,15 @@ public class Ticket {
     public void setRequestDate(LocalDate requestDate) {
         this.requestDate = requestDate;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", playerName='" + playerName + '\'' +
+                ", subject='" + subject + '\'' +
+                ", content='" + content + '\'' +
+                ", requestDate=" + requestDate +
+                '}';
+    }
 }

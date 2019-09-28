@@ -1,11 +1,10 @@
 package pl.lenistwo.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pl.lenistwo.rest.entity.TicketsList;
 import pl.lenistwo.rest.entity.Ticket;
 import pl.lenistwo.rest.exceptions.TicketNotFoundException;
@@ -33,25 +32,32 @@ public class TicketController {
     }
 
     @GetMapping(value = "/ticket-id", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Ticket getTicketById(@RequestParam(value = "id") Long id) {
-        return ticketRepository.getById(id);
+    public ResponseEntity<Ticket> getTicketById(@RequestParam(value = "id") Long id) {
+        Ticket ticket = Optional.ofNullable(ticketRepository.getById(id)).
+                orElseThrow(TicketNotFoundException::new);
+        return new ResponseEntity<>(ticket, HttpStatus.OK);
     }
 
     @GetMapping(value = "/player-tickets", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public TicketsList getAllPlayerTickets(@RequestParam(value = "userName") String userName) {
+    public ResponseEntity<TicketsList> getAllPlayerTickets(@RequestParam(value = "username") String userName) {
         ArrayList<Ticket> tickets = new ArrayList<>();
-        ticketRepository.getAllByPlayerName(userName).forEach(tickets::add);
-        return new TicketsList("All player tickets", tickets);
+        Iterable<Ticket> ticketIterable = Optional.ofNullable(ticketRepository.getAllByPlayerName(userName)).
+                orElseThrow(TicketNotFoundException::new);
+        ticketIterable.forEach(tickets::add);
+        return new ResponseEntity<>(new TicketsList("All player tickets", tickets), HttpStatus.OK);
     }
 
     @GetMapping(value = "/delete-ticket", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public TicketsList deleteTicketById(@RequestParam("id") Long id) {
+    public ResponseEntity<Void> deleteTicketById(@RequestParam("id") Long id) {
         Optional<Ticket> ticketOptional = Optional.ofNullable(ticketRepository.getById(id));
-        ticketRepository.delete(ticketOptional.orElseThrow(TicketNotFoundException::new));
-        ArrayList<Ticket> tickets = new ArrayList<>();
-        ticketRepository.findAll().forEach(tickets::add);
-        return new TicketsList("All tickets", tickets);
+        ticketRepository.delete(ticketOptional.
+                orElseThrow(TicketNotFoundException::new));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(value = "/create-ticket", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createNewTicket(@RequestBody Ticket ticket) {
+        ticketRepository.save(ticket);
+    }
 
 }
