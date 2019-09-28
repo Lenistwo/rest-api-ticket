@@ -56,8 +56,9 @@ public class TicketController {
     }
 
     @PostMapping(value = "/create-ticket", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createNewTicket(@RequestBody Ticket ticket) {
+    public ResponseEntity<Void> createNewTicket(@RequestBody Ticket ticket) {
         ticketRepository.save(ticket);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
