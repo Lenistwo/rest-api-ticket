@@ -24,6 +24,7 @@ public class TicketController {
         this.ticketRepository = ticketRepository;
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/all-tickets", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public TicketsList getAllTickets() {
         ArrayList<Ticket> tickets = new ArrayList<>();
@@ -55,10 +56,16 @@ public class TicketController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value = "/create-ticket", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createNewTicket(@RequestBody Ticket ticket) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/create-ticket", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createNewTicket(@RequestBody Ticket ticket) {
         ticketRepository.save(ticket);
-        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/update-ticket", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateTicket(@RequestBody Ticket ticket) {
+        ticketRepository.save(ticket);
     }
 
 }
