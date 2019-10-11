@@ -48,12 +48,12 @@ public class TicketController {
         return new ResponseEntity<>(new TicketsList("All player tickets", tickets), HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/delete-ticket", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Void> deleteTicketById(@RequestParam("id") Long id) {
+    public void deleteTicketById(@RequestParam("id") Long id) {
         Optional<Ticket> ticketOptional = Optional.ofNullable(ticketRepository.getById(id));
         ticketRepository.delete(ticketOptional.
                 orElseThrow(TicketNotFoundException::new));
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
